@@ -23,5 +23,19 @@ public class ProductService {
         return entity;
     }
 
+    public ProductEntity fetchProductIdLockForUpdate(Long productId){
+        ProductEntity entity = productJpaRepository.findByProductIdForLock(productId).orElseThrow(
+                () -> new ProductRuntimeException("해당 상품이 존재하지 않습니다.")
+        );
+        return entity;
+    }
+
+    public ProductEntity updateProduct(ProductEntity productEntity){
+        ProductEntity resEntity = productJpaRepository.save(productEntity);
+
+        log.info("ProductService/updateProduct : {}", Utils.toJson(resEntity));
+        return resEntity;
+    }
+
 
 }
