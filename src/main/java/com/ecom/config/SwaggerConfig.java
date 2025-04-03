@@ -1,4 +1,4 @@
-package com.ecom.config;
+package com.ecommerce.config;
 
 
 import io.swagger.v3.oas.models.Components;
