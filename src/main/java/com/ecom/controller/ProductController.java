@@ -2,8 +2,10 @@ package com.ecom.controller;
 
 import com.ecom.feature.model.param.FetchProductParam;
 import com.ecom.feature.model.result.ResFetchProductDto;
+import com.ecom.feature.model.result.ResTopFiveProductDto;
 import com.ecom.feature.service.front.ProductFrontService;
 import com.ecom.response.RestFetchProduct;
+import com.ecom.response.RestTopFiveProduct;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,7 +46,20 @@ public class ProductController {
         return new RestFetchProduct("200","상품 조회에 성공하였습니다.",resDto);
     }
 
-
+    @PostMapping("/topFive")
+    @Operation(summary = "인기 상품조회", description = "가장 많이 팔린 상위 5개의 상품")
+    @ApiResponse(
+            responseCode = "200",
+            description = "성공 시 [status,message,data] 형식으로 반환",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = RestTopFiveProduct.class)
+            )
+    )
+    public RestTopFiveProduct topFiveProduct(){
+        ResTopFiveProductDto resDto = new ResTopFiveProductDto();
+        return new RestTopFiveProduct("200","상위 5개의 상품 조회에 성공하였습니다.",resDto);
+    }
 
 
 
