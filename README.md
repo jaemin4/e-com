@@ -68,11 +68,7 @@
 
 ### 클래스 레이어
 
-| **Controller** | REST API 요청 처리 | 각 기능별로 컨트롤러가 잘 분리되어 있음 (`PointController`, `CouponController`, 등) |
-| --- | --- | --- |
-| **FrontService** | 여러 서비스 조합 + 트랜잭션 처리 | 복잡한 로직을 FrontService로 분리한 건 좋음 (트랜잭션 단위 유지에 유리) |
-| **Service** | 비즈니스 로직 처리 | `PointService`, `CouponService` 등 도메인 단위로 잘 나눠져 있음 |
-| **Repository** | DB 접근 계층 | `JpaRepository`를 기반으로 필터링 메서드도 잘 작성되어 있음 |
+| *한 필터링 메서드 |
 
 
 ![image](https://github.com/user-attachments/assets/215e72b5-5a15-491c-b75b-5057b393d1a9)
