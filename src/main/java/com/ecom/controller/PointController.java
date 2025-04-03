@@ -1,9 +1,12 @@
 package com.ecom.controller;
 
 
+import com.ecom.feature.model.param.ChargeUserPointParam;
 import com.ecom.feature.model.param.FetchUserPointParam;
+import com.ecom.feature.model.result.ResChargeUserPointDto;
 import com.ecom.feature.model.result.ResFetchUserPointDto;
 import com.ecom.feature.service.front.PointFrontService;
+import com.ecom.response.RestPointCharge;
 import com.ecom.response.RestPointFetchById;
 import com.ecom.util.Utils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,7 +52,22 @@ public class PointController {
         return new RestPointFetchById("200", "성공적으로 조회하였습니다.", resDto);
     }
 
+    @PostMapping("/charge")
+    @Operation(summary = "포인트 충전", description = "특정 유저의 포인트를 충전한다.")
+    @ApiResponse(
+            responseCode = "200",
+            description = "성공 시 [status,message,data] 형식으로 반환",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = RestPointCharge.class)
+            )
+    )
+    public RestPointCharge chargeUserPoint(@RequestBody @Valid ChargeUserPointParam param){
+        log.info("/point/charge : {}", Utils.toJson(param));
 
+        ResChargeUserPointDto resDto = pointFrontService.chargeUserPoint(param);
+        return new RestPointCharge("200", "충전이 완료되었습니다.", resDto);
+    }
 
 
 
