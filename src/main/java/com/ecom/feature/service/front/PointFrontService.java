@@ -1,12 +1,15 @@
 package com.ecom.feature.service.front;
 
+import com.ecom.exception.PointRuntimeException;
 import com.ecom.feature.model.entity.PointEntity;
 import com.ecom.feature.model.entity.PointHistoryEntity;
 import com.ecom.feature.model.entity.UserEntity;
 import com.ecom.feature.model.param.ChargeUserPointParam;
 import com.ecom.feature.model.param.FetchUserPointParam;
+import com.ecom.feature.model.param.UseUserPointParam;
 import com.ecom.feature.model.result.ResChargeUserPointDto;
 import com.ecom.feature.model.result.ResFetchUserPointDto;
+import com.ecom.feature.model.result.ResUseUserPointDto;
 import com.ecom.feature.service.persist.PointHistoryService;
 import com.ecom.feature.service.persist.PointService;
 import com.ecom.feature.service.persist.UserService;
@@ -73,7 +76,46 @@ public class PointFrontService {
         );
     }
 
+    /*
+          TODO 잔액 사용기능
+          TODO 비관적락을 이용한 동시성 제어
+       */
+    @Transactional
+    public ResUseUserPointDto useUserPoint(UseUserPointParam param){
+        //유저 존재 확인
+        UserEntity findUserEntity = userService.findByUserId(param.getUserId());
 
+        //포인트 등록 없을때 최초 등록
+        pointService.saveIfNotExists(findUserEntity);
+
+        //조회 시점에 비관적락
+        PointEntity findEntity = pointService.findByUserIdForLock(param.getUserId());
+
+        if(param.getAmount() > findEntity.getPoint()){
+            throw new PointRuntimeException("잔액이 부족합니다");
+        }
+        Long updateAmount = findEntity.getPoint() - param.getAmount();
+
+        //잔액 업데이트
+        findEntity.setPoint(updateAmount);
+        findEntity.setUpdateAt(OffsetDateTime.now(ZoneOffset.UTC));
+        PointEntity pointSaveResEntity = pointService.updateUserPoint(findEntity);
+
+        //공유자원이 아니기 떄문에 락X
+        pointHistoryService.savePointHistory(new PointHistoryEntity(
+                pointSaveResEntity.getUser(),
+                param.getAmount() * (-1),
+                OffsetDateTime.now(ZoneOffset.UTC)
+        ));
+
+        return new ResUseUserPointDto(
+                pointSaveResEntity.getPointId(),
+                findUserEntity.getUserId(),
+                pointSaveResEntity.getPoint(),
+                pointSaveResEntity.getCreateAt(),
+                pointSaveResEntity.getUpdateAt()
+        );
+    }
 
 
 }

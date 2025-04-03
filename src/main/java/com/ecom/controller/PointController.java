@@ -3,11 +3,14 @@ package com.ecom.controller;
 
 import com.ecom.feature.model.param.ChargeUserPointParam;
 import com.ecom.feature.model.param.FetchUserPointParam;
+import com.ecom.feature.model.param.UseUserPointParam;
 import com.ecom.feature.model.result.ResChargeUserPointDto;
 import com.ecom.feature.model.result.ResFetchUserPointDto;
+import com.ecom.feature.model.result.ResUseUserPointDto;
 import com.ecom.feature.service.front.PointFrontService;
 import com.ecom.response.RestPointCharge;
 import com.ecom.response.RestPointFetchById;
+import com.ecom.response.RestPointUse;
 import com.ecom.util.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -69,7 +72,22 @@ public class PointController {
         return new RestPointCharge("200", "충전이 완료되었습니다.", resDto);
     }
 
+    @PostMapping("/use")
+    @Operation(summary = "포인트 사용", description = "특정 유저의 포인트를 사용한다.")
+    @ApiResponse(
+            responseCode = "200",
+            description = "성공 시 [status,message,data] 형식으로 반환",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = RestPointUse.class)
+            )
+    )
+    public RestPointUse useUserPoint(@RequestBody @Valid UseUserPointParam param){
+        log.info("/point/use : {}", Utils.toJson(param));
 
+        ResUseUserPointDto resDto = pointFrontService.useUserPoint(param);
+        return new RestPointUse("200","사용이 완료되었습니다.", resDto);
+    }
 
 
 }
