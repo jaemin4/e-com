@@ -114,5 +114,13 @@
 - `ProductController` → `ProductFrontService` → `ProductService`
 - 단순한 조회
   
+### 5. 📦 인기 상품 조회
+
+- `ProductController` → `ProductFrontService` → `PaymentHistoryService`
+- 많이 결제된 상위 5개의 상품 조회
+
 API 명세서
-https://022d-2406-5900-112b-dc48-319d-bb57-1de6-c7c9.ngrok-free.app/swagger-ui/index.html#/%EC%BF%A0%ED%8F%B0/issueCoupon
+
+https://022d-2406-5900-112b-dc48-319d-bb57-1de6-c7c9.ngrok-free.app/swagger-ui/index.html#/
+
+
