@@ -1,6 +1,6 @@
 package com.ecom.response;
 
-import com.ecommerce.feature.any.model.result.ResUseUserPointDto;
+import com.ecom.feature.model.result.ResUseUserPointDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

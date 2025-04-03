@@ -1,6 +1,6 @@
 package com.ecom.response;
 
-import com.ecommerce.feature.any.model.result.ResPaymentDto;
+import com.ecom.feature.model.result.ResPaymentDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

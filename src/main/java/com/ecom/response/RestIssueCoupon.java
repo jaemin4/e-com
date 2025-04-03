@@ -1,6 +1,6 @@
 package com.ecom.response;
 
-import com.ecommerce.feature.any.model.result.ResIssueCouponDto;
+import com.ecom.feature.model.result.ResIssueCouponDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
